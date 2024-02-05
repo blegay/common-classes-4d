@@ -56,32 +56,6 @@ Class constructor()
 	This:C1470._startMs:=Milliseconds:C459
 	This:C1470._duration:=0
 	
-	If (False:C215)
-		// --========================24ac34429b3448d88e578c0ca77680cc
-		// Content-Disposition: form-data; name="sampleText"; filename="sampleText.txt"
-		// Content-Type: text/plain
-		// Content-Length: 425
-		//
-		// -----BEGIN RSA PUBLIC KEY-----
-		// MIIBCgKCAQEA6S4eWohhYutT6WNUU5zexmSkUfG4zgEMcSJM65qdzup900FweTLS
-		// ...
-		// 5EnPInqdOMSzlDpw9yh2OXYbsStiI5vGbjkrcTYI5Shm4VC4d7jOAxeCa3X/SJ+j
-		// I1U/6+5+wrpiH9HCa3+Eyxq2M8gOOhhgRQIDAQAB
-		// -----END RSA PUBLIC KEY-----
-		// --========================24ac34429b3448d88e578c0ca77680cc
-		// Content-Disposition: form-data; name="sampleText2"; filename="sampleText.txt2"
-		// Content-Type: text/plain
-		// Content-Length: 425
-		//
-		// -----BEGIN RSA PUBLIC KEY-----
-		// MIIBCgKCAQEA6S4eWohhYutT6WNUU5zexmSkUfG4zgEMcSJM65qdzup900FweTLS
-		// ...
-		// 5EnPInqdOMSzlDpw9yh2OXYbsStiI5vGbjkrcTYI5Shm4VC4d7jOAxeCa3X/SJ+j
-		// I1U/6+5+wrpiH9HCa3+Eyxq2M8gOOhhgRQIDAQAB
-		// -----END RSA PUBLIC KEY-----
-		// --========================24ac34429b3448d88e578c0ca77680cc--
-	End if 
-	
 Function appendBlob($blob : Blob; $headers : Variant)
 	ASSERT:C1129(Count parameters:C259>1; "requires 2 parameters")
 	
