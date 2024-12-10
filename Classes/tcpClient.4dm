@@ -1,4 +1,5 @@
 // This class implements a TCP client using 4D Internet Commands plugin TCP commands
+// This class is 4D v19+ compatible
 
 Class constructor($host : Text; $port : Integer; $timeoutSeconds : Integer; $paramsSession : Integer)
 	This:C1470.host:=$host
