@@ -79,7 +79,6 @@ Function _hexTextToBlob($hex : Text; $blobPtr : Pointer)
 	If (Not:C34($textLength ?? 0))  //is evenLONG_isEven($vl_textLength))
 		
 		var $i; $offset : Integer
-		var $hex : Text
 		
 		$offset:=0
 		For ($i; 1; $textLength; 2)
