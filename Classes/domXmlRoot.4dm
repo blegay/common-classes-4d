@@ -402,6 +402,41 @@ Function toObject()->$object : Object
 		$object[$rootDomElement.name]:=$rootDomElement._toObject()
 	End if 
 	
+Function copy($domXmlRootCopy : cs:C1710.domXmlRoot; $params : Object)
+	
+	//  var $src; $dst : cs.domXmlRoot
+	
+	//  $src:=cs.domXmlRoot.new()
+	
+	//  $dst:=cs.domXmlRoot.new()
+	//  $dst.options.indentation:=XML with indentation
+	//  $dst.options.bom:=XML disabled
+	
+	//  var $srcFile; $dstFile : 4D.File
+	//  $srcFile:=...
+	//  $dstFile:=
+	
+	//  $src.parse($srcFile)
+	
+	//  var $params : Object
+	//  $params:=New object
+	//  $params.removeIndentation:=True  //remove existing indentation
+	
+	//  $src.copy($dst; $params)
+	
+	//  $dst.save($dstFile)
+	
+	If (This:C1470.isOpen)
+		
+		var $rootDomElement : cs:C1710.domXmlElement
+		$rootDomElement:=This:C1470.rootDomElement
+		
+		$domXmlRootCopy.create($rootDomElement.name; $rootDomElement.attributes)
+		
+		$rootDomElement._copy($domXmlRootCopy.rootDomElement; $params)
+		
+	End if 
+	
 	
 	
 	//MARK:- private functions

@@ -455,6 +455,50 @@ Function _textIsEqualStrict($text1 : Text; $text2 : Text)->$isEqualStrict : Bool
 			$isEqualStrict:=(Position:C15($text1; $text2; 1; *)=1)
 	End case 
 	
+Function _copy($domElementCopy : cs:C1710.domXmlElement; $params : Object)
+	
+	var $node : Object
+	var $nodes : Collection
+	$nodes:=This:C1470.childNodes
+	If ($nodes#Null:C1517)
+		For each ($node; $nodes)
+			
+			Case of 
+				: ($node.type=XML ELEMENT:K45:20)  // 11
+					var $dstDomXmlElement : cs:C1710.domXmlElement
+					$dstDomXmlElement:=$domElementCopy.createElement($node.element.name; $node.element.attributes)
+					$node.element._copy($dstDomXmlElement; $params)
+					
+				: ($node.type=XML DATA:K45:12)  // 6
+					
+					If (Bool:C1537($params.removeIndentation))
+						If (Not:C34(Match regex:C1019("^\\s+$"; $node.data; 1)))
+							$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.data)
+						End if 
+					Else 
+						$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.data)
+					End if 
+					
+				: ($node.type=XML CDATA:K45:13)  //7
+					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.cdata)
+					
+				: ($node.type=XML comment:K45:8)  // 2
+					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.comment)
+					
+				: ($node.type=XML DOCTYPE:K45:19)  //10
+					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.doctype)
+					
+				: ($node.type=XML processing instruction:K45:9)  // 3
+					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.processingInstruction)
+					
+				Else 
+					
+			End case 
+			
+		End for each 
+	End if 
+	
+	
 Function _toObject()->$result : Variant
 	
 	var $domElementColl : Collection
