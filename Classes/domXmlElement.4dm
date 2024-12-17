@@ -137,6 +137,20 @@ Function appendChildNode($childType : Integer; $childValue : Variant)->$domEleme
 		End if 
 	End if 
 	
+	
+Function createElement($name : Text; $attributes : Object)->$domElement : cs:C1710.domXmlElement
+	
+	If (This:C1470.isValid)
+		
+		var $domElementRef : Text
+		$domElementRef:=DOM Create XML element:C865(This:C1470._domElementRef; $name)
+		If (This:C1470._domElementRefIsValid($domElementRef))
+			$domElement:=cs:C1710.domXmlElement.new($domElementRef)
+			$domElement.attributes:=$attributes
+		End if 
+		
+	End if 
+	
 Function appendElement($domElementSource : cs:C1710.domXmlElement)->$domElement : cs:C1710.domXmlElement
 	//TODO: renommer appendElement => copyElement ?
 	
@@ -150,7 +164,7 @@ Function appendElement($domElementSource : cs:C1710.domXmlElement)->$domElement 
 		End if 
 	End if 
 	
-Function insertElement($domElementSource : cs:C1710.domXmlElement; $childIndex : Integer)->$domElement : cs:C1710.domXmlElement
+Function insertElement($domElementSource : cs:C1710.domXmlElement; $childIndex : Integer; $attributes : Object)->$domElement : cs:C1710.domXmlElement
 	
 	If (This:C1470.isValid)
 		If ($domElementSource.isValid)
@@ -158,6 +172,7 @@ Function insertElement($domElementSource : cs:C1710.domXmlElement; $childIndex :
 			$domElementRef:=DOM Insert XML element:C1083(This:C1470._domElementRef; $domElementSource.domRef; $childIndex)
 			If (This:C1470._domElementRefIsValid($domElementRef))
 				$domElement:=cs:C1710.domXmlElement.new($domElementRef)
+				$domElement.attributes:=$attributes
 			End if 
 		End if 
 	End if 
@@ -277,7 +292,7 @@ Function get childElements->$domElementColl : Collection
 Function get childNodes->$nodes : Collection
 	
 	If (This:C1470.isValid)
-		$domElementColl:=New collection:C1472
+		$nodes:=New collection:C1472
 		
 		ARRAY LONGINT:C221($tl_domElementType; 0)
 		ARRAY TEXT:C222($tt_domElementRefs; 0)
@@ -291,26 +306,26 @@ Function get childNodes->$nodes : Collection
 			$node.type:=$tl_domElementType{$i}
 			
 			Case of 
-				: ($tl_domElementType{$i}=XML CDATA:K45:13)  //7
+				: ($node.type=XML CDATA:K45:13)  //7
 					$node.cdata:=$tt_domElementRefs{$i}
 					
-				: ($tl_domElementType{$i}=XML comment:K45:8)  // 2
+				: ($node.type=XML comment:K45:8)  // 2
 					$node.comment:=$tt_domElementRefs{$i}
 					
-				: ($tl_domElementType{$i}=XML DATA:K45:12)  // 6
+				: ($node.type=XML DATA:K45:12)  // 6
 					$node.data:=$tt_domElementRefs{$i}
 					
-				: ($tl_domElementType{$i}=XML DOCTYPE:K45:19)  //10
+				: ($node.type=XML DOCTYPE:K45:19)  //10
 					$node.doctype:=$tt_domElementRefs{$i}
 					
-				: ($tl_domElementType{$i}=XML processing instruction:K45:9)  // 3
+				: ($node.type=XML processing instruction:K45:9)  // 3
 					$node.processingInstruction:=$tt_domElementRefs{$i}
 					
-				: ($tl_domElementType{$i}=XML ELEMENT:K45:20)  // 11
+				: ($node.type=XML ELEMENT:K45:20)  // 11
 					$node.element:=cs:C1710.domXmlElement.new($tt_domElementRefs{$i})
 			End case 
 			
-			$domElementColl.push($node)
+			$nodes.push($node)
 		End for 
 		
 		ARRAY LONGINT:C221($tl_domElementType; 0)
