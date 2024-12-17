@@ -473,23 +473,23 @@ Function _copy($domElementCopy : cs:C1710.domXmlElement; $params : Object)
 					
 					If (Bool:C1537($params.removeIndentation))
 						If (Not:C34(Match regex:C1019("^\\s+$"; $node.data; 1)))
-							$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.data)
+							$domElementCopy.appendChildNode($node.type; $node.data)
 						End if 
 					Else 
-						$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.data)
+						$domElementCopy.appendChildNode($node.type; $node.data)
 					End if 
 					
 				: ($node.type=XML CDATA:K45:13)  //7
-					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.cdata)
+					$domElementCopy.appendChildNode($node.type; $node.cdata)
 					
 				: ($node.type=XML comment:K45:8)  // 2
-					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.comment)
+					$domElementCopy.appendChildNode($node.type; $node.comment)
 					
 				: ($node.type=XML DOCTYPE:K45:19)  //10
-					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.doctype)
+					$domElementCopy.appendChildNode($node.type; $node.doctype)
 					
 				: ($node.type=XML processing instruction:K45:9)  // 3
-					$newNode:=DOM Append XML child node:C1080($domElementCopy.domRef; $node.type; $node.processingInstruction)
+					$domElementCopy.appendChildNode($node.type; $node.processingInstruction)
 					
 				Else 
 					
