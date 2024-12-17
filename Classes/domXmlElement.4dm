@@ -440,4 +440,48 @@ Function _textIsEqualStrict($text1 : Text; $text2 : Text)->$isEqualStrict : Bool
 			$isEqualStrict:=(Position:C15($text1; $text2; 1; *)=1)
 	End case 
 	
+Function _toObject()->$result : Variant
+	
+	var $domElementColl : Collection
+	$domElementColl:=This:C1470.childElements
+	If ($domElementColl.length>0)
+		
+		$result:=New object:C1471
+		
+		var $domElement : cs:C1710.domXmlElement
+		For each ($domElement; $domElementColl)
+			
+			var $childObject : Variant
+			$childObject:=$domElement._toObject()
+			
+			var $attributes : Object
+			$attributes:=$domElement.attributes
+			If (Not:C34(OB Is empty:C1297($attributes)))
+				
+				If (Value type:C1509($childObject)#Is object:K8:27)
+					$childObject:=New object:C1471("content"; $childObject)
+				End if 
+				
+				var $attrName : Text
+				For each ($attrName; $attributes)
+					$childObject[$attrName]:=$attributes[$attrName]
+				End for each 
+				
+			End if 
+			
+			Case of 
+				: ($result[$domElement.name]=Null:C1517)
+					$result[$domElement.name]:=$childObject
+				Else   // more than one element with same name, make it a collection
+					If (Value type:C1509($result[$domElement.name])#Is collection:K8:32)
+						$result[$domElement.name]:=New collection:C1472($result[$domElement.name])
+					End if 
+					$result[$domElement.name].push($childObject)
+			End case 
+			
+		End for each 
+		
+	Else 
+		$result:=This:C1470.value
+	End if 
 	

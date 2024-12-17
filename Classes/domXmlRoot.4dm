@@ -390,6 +390,20 @@ Function findElements($xpath : Text)->$domElementColl : Collection
 	End if 
 	
 	
+	//MARK:- util functions
+	
+Function toObject()->$object : Object
+	If (This:C1470.isOpen)
+		$object:=New object:C1471
+		
+		var $rootDomElement : cs:C1710.domXmlElement
+		$rootDomElement:=This:C1470.rootDomElement
+		
+		$object[$rootDomElement.name]:=$rootDomElement._toObject()
+	End if 
+	
+	
+	
 	//MARK:- private functions
 	
 Function _optionsApply()
