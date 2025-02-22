@@ -370,6 +370,13 @@ Function get infos()->$infos : Object
 		$infos.documentUri:=DOM Get XML information:C721(This:C1470._rootDomRef; Document URI:K45:6)  //6
 	End if 
 	
+Function useNewXpathSyntax()->$newXpathSyntax : Boolean
+	
+	var $domElement : cs:C1710.domXmlElement
+	$domElement:=cs:C1710.domXmlElement.new("")
+	
+	$newXpathSyntax:=$domElement.useNewXpathSyntax()
+	
 	
 	//MARK:- find/search functions
 	
@@ -423,8 +430,10 @@ Function copy($domXmlRootCopy : cs:C1710.domXmlRoot; $params : Object)
 	//  $params.removeIndentation:=True  //remove existing indentation
 	
 	//  $src.copy($dst; $params)
+	//  $src.close()
 	
 	//  $dst.save($dstFile)
+	//  $dst.close()
 	
 	If (This:C1470.isOpen)
 		

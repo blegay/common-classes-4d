@@ -137,7 +137,6 @@ Function appendChildNode($childType : Integer; $childValue : Variant)->$domEleme
 		End if 
 	End if 
 	
-	
 Function createElement($name : Text; $attributes : Object)->$domElement : cs:C1710.domXmlElement
 	
 	If (This:C1470.isValid)
@@ -380,11 +379,39 @@ Function findElementById($id : Text)->$domElement : cs:C1710.domXmlElement
 		End if 
 	End if 
 	
+Function useNewXpathSyntax()->$newXpathSyntax : Boolean
+	
+	Case of 
+		: (Storage:C1525.xml=Null:C1517)
+			
+			$newXpathSyntax:=This:C1470._newXpathSyntaxSub()
+			
+			Use (Storage:C1525)
+				Storage:C1525.xml:=New shared object:C1526("newXpathSyntax"; $newXpathSyntax)
+			End use 
+			
+			//var $xml : Object
+			//$xml:=New shared object("newXpathSyntax"; $newXpathSyntax)
+			//Use (Storage)
+			//Storage.xml:=OB Copy($xml; ck shared)
+			//End use 
+			
+		: (Storage:C1525.xml.newXpathSyntax=Null:C1517)
+			
+			$newXpathSyntax:=This:C1470._newXpathSyntaxSub()
+			
+			Use (Storage:C1525)
+				Storage:C1525.xml.newXpathSyntax:=$newXpathSyntax
+			End use 
+			
+		Else   // use cached value
+			$newXpathSyntax:=Bool:C1537(Storage:C1525.xml.newXpathSyntax)
+	End case 
+	
 	
 	//MARK:- private functions
 	
-Function _newXpathSyntax()->$newXpathSyntax : Boolean
-	
+Function _newXpathSyntaxSub()->$newXpathSyntax : Boolean
 	$newXpathSyntax:=False:C215
 	
 	var $domRef : Text
@@ -471,13 +498,17 @@ Function _copy($domElementCopy : cs:C1710.domXmlElement; $params : Object)
 					
 				: ($node.type=XML DATA:K45:12)  // 6
 					
-					If (Bool:C1537($params.removeIndentation))
-						If (Not:C34(Match regex:C1019("^\\s+$"; $node.data; 1)))
-							$domElementCopy.appendChildNode($node.type; $node.data)
-						End if 
-					Else 
+					If (Not:C34(Bool:C1537($params.removeIndentation))) || (Not:C34(Match regex:C1019("^\\s+$"; $node.data; 1)))
 						$domElementCopy.appendChildNode($node.type; $node.data)
 					End if 
+					
+					//  If (Bool($params.removeIndentation))
+					//    If (Not(Match regex("^\\s+$"; $node.data; 1)))
+					//      $domElementCopy.appendChildNode($node.type; $node.data)
+					//    End if 
+					//  Else 
+					//    $domElementCopy.appendChildNode($node.type; $node.data)
+					//  End if 
 					
 				: ($node.type=XML CDATA:K45:13)  //7
 					$domElementCopy.appendChildNode($node.type; $node.cdata)
