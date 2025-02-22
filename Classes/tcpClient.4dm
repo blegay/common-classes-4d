@@ -1,3 +1,4 @@
+//%attributes = {}
 // This class implements a TCP client using 4D Internet Commands plugin TCP commands
 // This class is 4D v19+ compatible
 
@@ -253,10 +254,10 @@ Function receiveBlob()->$blob : Blob
 	// read blob until last delimiter found
 	// if extra data is received after last delimiter on buffer, it will be returned in next calls (when delimiter is received)
 	// data is returned with delimiter included
-Function receiveBlobUntilLast($delimiter : Blob)->$blob : Blob
+Function receiveBlobUntilLast($delimiter : Blob) : Blob
 	
 	ASSERT:C1129(BLOB size:C605($delimiter)>0; "empty delimiter")
-	
+	var $blob : Blob
 	SET BLOB SIZE:C606($blob; 0)
 	
 	If (This:C1470.connexionOpened())
@@ -379,13 +380,16 @@ Function receiveBlobUntilLast($delimiter : Blob)->$blob : Blob
 		
 	End if 
 	
+	return $blob
+	
 	// read blob until first delimiter found
 	// if extra data is received after first delimiter on buffer, it will be returned in next calls (when delimiter is received)
 	// data is returned with delimiter included
-Function receiveBlobUntilFirst($delimiter : Blob)->$blob : Blob
+Function receiveBlobUntilFirst($delimiter : Blob) : Blob
 	
 	ASSERT:C1129(BLOB size:C605($delimiter)>0; "empty delimiter")
 	
+	var $blob : Blob
 	SET BLOB SIZE:C606($blob; 0)
 	
 	// there is no warranty that the data is fully received in one block until delimiter.
@@ -396,6 +400,7 @@ Function receiveBlobUntilFirst($delimiter : Blob)->$blob : Blob
 	// If no delimiter is found, received bytes will be added to the buffer.
 	
 	$blob:=This:C1470.receiveBlob()
+	
 	If ((BLOB size:C605($blob)>0) | (This:C1470.bufferBase64#""))
 		
 		This:C1470.debug("receiveBlobUntilFirst"; 6; "received blob : "+This:C1470.debugBlobToText($blob))
@@ -498,6 +503,8 @@ Function receiveBlobUntilFirst($delimiter : Blob)->$blob : Blob
 		IDLE:C311
 		DELAY PROCESS:C323(Current process:C322; 1)
 	End if 
+	
+	return $blob
 	
 	// read blob until data size
 	// if extra data is received after size on buffer, it will be returned in next calls
