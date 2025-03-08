@@ -82,7 +82,7 @@ Function _xmlToObject($structureXml : Text)->$structureObject : Object
 					C_TEXT:C284($vt_tableElementDomRef)
 					$vt_tableElementDomRef:=$tt_tableElementDomRef{$vl_tableIndex}
 					
-					//_O_C_OBJECT($vo_table)
+					C_OBJECT:C1216($vo_table)
 					
 					//_O_C_TEXT($vt_attrName; $vt_attrValue)
 					//_O_C_LONGINT($vl_attrIndex)
