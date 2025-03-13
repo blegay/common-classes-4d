@@ -27,7 +27,7 @@ Function decode($urlEncoded : Text)->$url : Text
 		$url:=$urlEncoded
 		
 		// hard coded : replace "+" in Url which is a substribtute to space
-		$url:=Replace string:C233($url; "+"; " ")
+		$url:=Replace string:C233($url; "+"; " "; *)
 		
 		// get a group of consecutive "%xx" where "xx" are hexadecimal characters
 		var $regex : Text
