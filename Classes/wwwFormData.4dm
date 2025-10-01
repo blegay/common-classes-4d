@@ -56,7 +56,7 @@ Function encode($data : Object)->$formData : Text
 	
 Function encodeBlob($data : Object; $charset : Text)->$formDataBlob : Blob
 	var $encoded : Text
-	$encoded:=This:C1470.urlEncode($data)
+	$encoded:=This:C1470.encode($data)
 	
 	var $charsetConv : Text
 	If (Count parameters:C259>1)
