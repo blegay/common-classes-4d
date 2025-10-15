@@ -112,7 +112,8 @@ Function finalize()->$blob : Blob
 	$blob:=This:C1470.data
 	
 Function getContentType()->$contentType : Text
-	$contentType:="multipart/form-data; boundary=\""+This:C1470.boundary+"\""
+	$contentType:="multipart/form-data; boundary="+This:C1470.boundary
+	//$contentType:="multipart/form-data; boundary=\""+This:C1470.boundary+"\""
 	
 Function _appendHeaders($headers : Variant; $blobSize : Integer)
 	ASSERT:C1129(Count parameters:C259>1; "requires 2 parameters")
