@@ -355,7 +355,7 @@ Function transparency($rgb : Integer)->$picture : Picture
 	
 	//MARK:- picture operator functions
 	
-Function horizontalConcatenate($picture : Integer)->$newPicture : Picture
+Function horizontalConcatenate($pixels : Integer)->$newPicture : Picture
 	$newPicture:=This:C1470.picture+$pixels
 	
 Function verticalConcatenate($pixels : Integer)->$newPicture : Picture
