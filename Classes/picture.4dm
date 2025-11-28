@@ -85,7 +85,7 @@ Function set keywords($keywords : Collection)
 	End if 
 	
 Function get type()->$type : Text
-	$type:=This:C1470.typeToExtension(This:C1470._type)
+	$type:=This:C1470._type
 	
 Function get extension()->$extension : Text
 	$extension:=This:C1470.typeToExtension(This:C1470._type)
@@ -774,6 +774,147 @@ Function getPartType()->$partType : Text
 		
 	End if 
 	
+Function typeToExtension($type : Text)->$extension
+	$extension:=$type
+	
+/*
+Case of 
+: ($type=".4pct")
+$extension:=$type
+	
+: ($type=".jpg")
+$extension:=$type
+	
+: ($type=".png")
+$extension:=$type
+	
+: ($type=".bmp")
+$extension:=$type
+	
+: ($type=".gif")
+$extension:=$type
+	
+: ($type=".tif")
+$extension:=$type
+	
+: ($type=".pdf")
+$extension:=$type
+	
+: ($type=".svg")
+$extension:=$type
+	
+: ($type=".jp2")
+$extension:=$type
+	
+: ($type=".astc")
+$extension:=$type
+	
+: ($type=".ktx")
+$extension:=$type
+	
+: ($type=".heic")
+$extension:=$type
+	
+: ($type=".heics")
+$extension:=$type
+	
+: ($type=".ico")
+$extension:=$type
+	
+: ($type=".icns")
+$extension:=$type
+	
+: ($type=".psd")
+$extension:=$type
+	
+: ($type=".tga")
+$extension:=$type
+	
+: ($type=".exr")
+$extension:=$type
+	
+: ($type=".pbm")
+$extension:=$type
+	
+: ($type=".dds")
+$extension:=$type
+	
+: ($type=".pvr")
+$extension:=$type
+	
+Else 
+$extension:=$type
+End case 
+*/
+	
+Function typeToMime($type : Text)->$mime : Text
+	
+	Case of 
+		: ($type=".4pct")
+			$mime:="image/x-pict"
+			
+		: ($type=".jpg")  // ou .jpeg
+			$mime:="image/jpeg"
+			
+		: ($type=".png")
+			$mime:="image/png"
+			
+		: ($type=".bmp")
+			$mime:="image/bmp"
+			
+		: ($type=".gif")
+			$mime:="image/gif"
+			
+		: ($type=".tif")  // ou .tiff
+			$mime:="image/tiff"
+			
+		: ($type=".pdf")
+			$mime:="application/pdf"
+			
+		: ($type=".svg")
+			$mime:="image/svg+xml"
+			
+		: ($type=".jp2")
+			$mime:="image/jp2"
+			
+		: ($type=".astc")
+			$mime:="image/astc"
+			
+		: ($type=".ktx")
+			$mime:="image/ktx"
+			
+		: ($type=".heic")
+			$mime:="image/heic"
+			
+		: ($type=".heics")
+			$mime:="image/heics"
+			
+		: ($type=".ico")
+			$mime:="image/x-icon"
+			
+		: ($type=".icns")
+			$mime:="image/icns"
+			
+		: ($type=".psd")
+			$mime:="image/vnd.adobe.photoshop"
+			
+		: ($type=".tga")
+			$mime:="image/x-tga"
+			
+		: ($type=".exr")
+			$mime:="image/x-exr"
+			
+		: ($type=".pbm")
+			$mime:="image/x-portable-bitmap"
+			
+		: ($type=".dds")
+			$mime:="image/vnd.ms-dds"
+			
+		: ($type=".pvr")
+			$mime:="image/x-pvr"
+			
+	End case 
+	
 	
 	//MARK:- metadata functions
 	
@@ -872,145 +1013,3 @@ Function getMetadataAsXml()->$xml : Text
 		DOM CLOSE XML:C722($domXmlRoot)
 	End if 
 	
-	
-Function typeToExtension($type : Text)->$extension
-	$extension:=$type
-	
-/*
-Case of 
-: ($type=".4pct")
-$extension:=$type
-	
-: ($type=".jpg")
-$extension:=$type
-	
-: ($type=".png")
-$extension:=$type
-	
-: ($type=".bmp")
-$extension:=$type
-	
-: ($type=".gif")
-$extension:=$type
-	
-: ($type=".tif")
-$extension:=$type
-	
-: ($type=".pdf")
-$extension:=$type
-	
-: ($type=".svg")
-$extension:=$type
-	
-: ($type=".jp2")
-$extension:=$type
-	
-: ($type=".astc")
-$extension:=$type
-	
-: ($type=".ktx")
-$extension:=$type
-	
-: ($type=".heic")
-$extension:=$type
-	
-: ($type=".heics")
-$extension:=$type
-	
-: ($type=".ico")
-$extension:=$type
-	
-: ($type=".icns")
-$extension:=$type
-	
-: ($type=".psd")
-$extension:=$type
-	
-: ($type=".tga")
-$extension:=$type
-	
-: ($type=".exr")
-$extension:=$type
-	
-: ($type=".pbm")
-$extension:=$type
-	
-: ($type=".dds")
-$extension:=$type
-	
-: ($type=".pvr")
-$extension:=$type
-	
-Else 
-$extension:=$type
-End case 
-*/
-	
-	
-Function typeToMime($type : Text)->$mime : Text
-	
-	Case of 
-		: ($type=".4pct")
-			$mime:="image/x-pict"
-			
-		: ($type=".jpg")  // ou .jpeg
-			$mime:="image/jpeg"
-			
-		: ($type=".png")
-			$mime:="image/png"
-			
-		: ($type=".bmp")
-			$mime:="image/bmp"
-			
-		: ($type=".gif")
-			$mime:="image/gif"
-			
-		: ($type=".tif")  // ou .tiff
-			$mime:="image/tiff"
-			
-		: ($type=".pdf")
-			$mime:="application/pdf"
-			
-		: ($type=".svg")
-			$mime:="image/svg+xml"
-			
-		: ($type=".jp2")
-			$mime:="image/jp2"
-			
-		: ($type=".astc")
-			$mime:="image/astc"
-			
-		: ($type=".ktx")
-			$mime:="image/ktx"
-			
-		: ($type=".heic")
-			$mime:="image/heic"
-			
-		: ($type=".heics")
-			$mime:="image/heics"
-			
-		: ($type=".ico")
-			$mime:="image/x-icon"
-			
-		: ($type=".icns")
-			$mime:="image/icns"
-			
-		: ($type=".psd")
-			$mime:="image/vnd.adobe.photoshop"
-			
-		: ($type=".tga")
-			$mime:="image/x-tga"
-			
-		: ($type=".exr")
-			$mime:="image/x-exr"
-			
-		: ($type=".pbm")
-			$mime:="image/x-portable-bitmap"
-			
-		: ($type=".dds")
-			$mime:="image/vnd.ms-dds"
-			
-		: ($type=".pvr")
-			$mime:="image/x-pvr"
-			
-	End case 
