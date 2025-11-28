@@ -361,7 +361,7 @@ Function horizontalConcatenate($pixels : Integer)->$newPicture : Picture
 Function verticalConcatenate($pixels : Integer)->$newPicture : Picture
 	$newPicture:=This:C1470.picture/$pixels
 	
-	Function horizontalMove($pixels : Integer)->$picture : Picture
+Function horizontalMove($pixels : Integer)->$picture : Picture
 	If (Not:C34(This:C1470.isEmpty()))
 		$picture:=This:C1470.picture+$pixels
 	End if 
@@ -1014,6 +1014,3 @@ Function typeToMime($type : Text)->$mime : Text
 			$mime:="image/x-pvr"
 			
 	End case 
-	
-	
-	
