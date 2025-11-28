@@ -527,7 +527,7 @@ Function getCodecs()->$codecs : Collection
 */
 	
 	ARRAY TEXT:C222($tt_codec; 0)
-	ARRAY TEXT:C222($tt_codec; 0)
+	ARRAY TEXT:C222($tt_codecName; 0)
 	PICTURE CODEC LIST:C992($tt_codec; $tt_codecName)
 	ARRAY TO COLLECTION:C1563($codecs; $tt_codec; "codec"; $tt_codecName; "name")
 	
