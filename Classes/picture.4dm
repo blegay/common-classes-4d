@@ -1,4 +1,3 @@
-
 // This class handles pictures
 // It does wrap native commands in a class and functions
 // It is a 4D v20 class
@@ -6,6 +5,7 @@
 // Bruno LEGAY
 
 // todo :
+//  - read/write from pasteboard 
 //  - add try/catch blocks
 
 property _picture : Picture
@@ -84,6 +84,25 @@ Function set keywords($keywords : Collection)
 		ARRAY TEXT:C222($tt_keywords; 0)
 	End if 
 	
+Function get type()->$type : Text
+	$type:=This:C1470.typeToExtension(This:C1470._type)
+	
+Function get extension()->$extension : Text
+	$extension:=This:C1470.typeToExtension(This:C1470._type)
+	
+Function get mime()->$mime : Text
+	$mime:=This:C1470.typeToMime(This:C1470._type)
+	
+Function get infos()->$infos : Object
+	$infos:={\
+		width: This:C1470.width; \
+		height: This:C1470.height; \
+		size: This:C1470.size; \
+		filename: This:C1470._filename; \
+		type: This:C1470._type; \
+		isEmpty: This:C1470.isEmpty()\
+		}
+	
 	
 	//MARK:- basic functions
 	
@@ -127,7 +146,7 @@ Function writePictureFile($file : 4D:C1709.File; $codec : Text)->$result : Objec
 	
 	$result:={success: False:C215}
 	If (Not:C34(This:C1470.isEmpty()))
-		If ($codec=Null:C1517)
+		If (($codec=Null:C1517) || ($codec=""))
 			WRITE PICTURE FILE:C680($file.platformPath; This:C1470.picture)
 		Else 
 			WRITE PICTURE FILE:C680($file.platformPath; This:C1470.picture; $codec)
@@ -136,6 +155,21 @@ Function writePictureFile($file : 4D:C1709.File; $codec : Text)->$result : Objec
 			$result.success:=True:C214
 		End if 
 	End if 
+	
+	
+	//MARK:- pasteboard functions
+	
+Function setPictureToPasteboard()
+	var $picture : Picture
+	If (This:C1470.picture#Null:C1517)
+		$picture:=This:C1470.picture
+	End if 
+	SET PICTURE TO PASTEBOARD:C521($picture)
+	
+Function getPictureToPasteboard()
+	var $picture : Picture
+	GET PICTURE FROM PASTEBOARD:C522($picture)
+	This:C1470.picture:=$picture
 	
 	
 	//MARK:- native functions
@@ -155,7 +189,7 @@ Function convert($codec : Text; $compression : Real)->$picture
 	
 	If (Not:C34(This:C1470.isEmpty()))
 		$picture:=This:C1470.picture
-		If ($compression=Null:C1517)
+		If ((Count parameters:C259=1) || ($compression=Null:C1517))
 			CONVERT PICTURE:C1002($picture; $codec)
 		Else 
 			CONVERT PICTURE:C1002($picture; $codec; $compression)
@@ -252,14 +286,14 @@ Function rotate($angle : Real)->$rotatedPicture : Picture
 	
 Function crop($param : Object)->$croppedPicture : Picture
 	ASSERT:C1129($param#Null:C1517)
-	ASSERT:C1129(Value type:C1509($param.x)=Is real:K8:4)
-	ASSERT:C1129(Value type:C1509($param.y)=Is real:K8:4)
+	ASSERT:C1129(Value type:C1509($param.originX)=Is real:K8:4)
+	ASSERT:C1129(Value type:C1509($param.originY)=Is real:K8:4)
 	ASSERT:C1129(Value type:C1509($param.width)=Is real:K8:4)
 	ASSERT:C1129(Value type:C1509($param.height)=Is real:K8:4)
 	
 	If (Not:C34(This:C1470.isEmpty()))
 		$croppedPicture:=This:C1470.picture
-		TRANSFORM PICTURE:C988($croppedPicture; Crop:K61:7; $param.x; $param.y; $param.width; $param.height)
+		TRANSFORM PICTURE:C988($croppedPicture; Crop:K61:7; $param.originX; $param.originY; $param.width; $param.height)
 	End if 
 	
 Function reset()->$picture : Picture
@@ -327,7 +361,7 @@ Function horizontalConcatenate($picture : Integer)->$newPicture : Picture
 Function verticalConcatenate($pixels : Integer)->$newPicture : Picture
 	$newPicture:=This:C1470.picture/$pixels
 	
-Function horizontalMove($pixels : Integer)->$picture : Picture
+	"Function horizontalMove($pixels : Integer)->$picture : Picture"
 	If (Not:C34(This:C1470.isEmpty()))
 		$picture:=This:C1470.picture+$pixels
 	End if 
@@ -377,6 +411,23 @@ Function toBase64($codec : Text)->$base64 : Text
 		var $blob : Blob
 		PICTURE TO BLOB:C692(This:C1470.picture; $blob; $codec="" ? "image/jpg" : $codec)
 		BASE64 ENCODE:C895($blob; $base64)
+	End if 
+	
+	
+	//MARK:- blob functions
+	
+Function fromBlob($blob : Blob; $codec : Text)
+	ASSERT:C1129(Count parameters:C259>0)
+	
+	var $picture : Picture
+	If (BLOB size:C605($blob)>0)
+		BLOB TO PICTURE:C682($blob; $picture; $codec="" ? "image/jpg" : $codec)
+	End if 
+	This:C1470.picture:=$picture
+	
+Function toBlob($codec : Text)->$blob : Blob
+	If (Not:C34(This:C1470.isEmpty()))
+		PICTURE TO BLOB:C692(This:C1470.picture; $blob; $codec="" ? "image/jpg" : $codec)
 	End if 
 	
 	
@@ -820,3 +871,149 @@ Function getMetadataAsXml()->$xml : Text
 		DOM EXPORT TO VAR:C863($domXmlRoot; $xml)
 		DOM CLOSE XML:C722($domXmlRoot)
 	End if 
+	
+	
+Function typeToExtension($type : Text)->$extension
+	$extension:=$type
+	
+/*
+Case of 
+: ($type=".4pct")
+$extension:=$type
+	
+: ($type=".jpg")
+$extension:=$type
+	
+: ($type=".png")
+$extension:=$type
+	
+: ($type=".bmp")
+$extension:=$type
+	
+: ($type=".gif")
+$extension:=$type
+	
+: ($type=".tif")
+$extension:=$type
+	
+: ($type=".pdf")
+$extension:=$type
+	
+: ($type=".svg")
+$extension:=$type
+	
+: ($type=".jp2")
+$extension:=$type
+	
+: ($type=".astc")
+$extension:=$type
+	
+: ($type=".ktx")
+$extension:=$type
+	
+: ($type=".heic")
+$extension:=$type
+	
+: ($type=".heics")
+$extension:=$type
+	
+: ($type=".ico")
+$extension:=$type
+	
+: ($type=".icns")
+$extension:=$type
+	
+: ($type=".psd")
+$extension:=$type
+	
+: ($type=".tga")
+$extension:=$type
+	
+: ($type=".exr")
+$extension:=$type
+	
+: ($type=".pbm")
+$extension:=$type
+	
+: ($type=".dds")
+$extension:=$type
+	
+: ($type=".pvr")
+$extension:=$type
+	
+Else 
+$extension:=$type
+End case 
+*/
+	
+	
+Function typeToMime($type : Text)->$mime : Text
+	
+	Case of 
+		: ($type=".4pct")
+			$mime:="image/x-pict"
+			
+		: ($type=".jpg")  // ou .jpeg
+			$mime:="image/jpeg"
+			
+		: ($type=".png")
+			$mime:="image/png"
+			
+		: ($type=".bmp")
+			$mime:="image/bmp"
+			
+		: ($type=".gif")
+			$mime:="image/gif"
+			
+		: ($type=".tif")  // ou .tiff
+			$mime:="image/tiff"
+			
+		: ($type=".pdf")
+			$mime:="application/pdf"
+			
+		: ($type=".svg")
+			$mime:="image/svg+xml"
+			
+		: ($type=".jp2")
+			$mime:="image/jp2"
+			
+		: ($type=".astc")
+			$mime:="image/astc"
+			
+		: ($type=".ktx")
+			$mime:="image/ktx"
+			
+		: ($type=".heic")
+			$mime:="image/heic"
+			
+		: ($type=".heics")
+			$mime:="image/heics"
+			
+		: ($type=".ico")
+			$mime:="image/x-icon"
+			
+		: ($type=".icns")
+			$mime:="image/icns"
+			
+		: ($type=".psd")
+			$mime:="image/vnd.adobe.photoshop"
+			
+		: ($type=".tga")
+			$mime:="image/x-tga"
+			
+		: ($type=".exr")
+			$mime:="image/x-exr"
+			
+		: ($type=".pbm")
+			$mime:="image/x-portable-bitmap"
+			
+		: ($type=".dds")
+			$mime:="image/vnd.ms-dds"
+			
+		: ($type=".pvr")
+			$mime:="image/x-pvr"
+			
+	End case 
+	
+	
+	
