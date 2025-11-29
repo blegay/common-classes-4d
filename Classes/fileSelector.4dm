@@ -5,20 +5,26 @@
 // Bruno LEGAY - 2025-11-29
 
 /*
+// short style 
+var $selectorOptions : Object
+$selectorOptions:={\
+folder: Folder(fk desktop folder); \
+title: "select your files"; \
+extensionFilter: [".jpg"; ".png"; ".tif"]; \
+multipleFiles: True; \
+useSheetWindow: True}
 
-var $selector : cs.fileSelector
-$selector:=cs.fileSelector.new({folder: Folder(fk desktop folder); title: "select your files"; multipleFiles:True})
-
-var $resutlt : Object
-$resutlt:=$selector.selectDialog()
-If ($resutlt.success && ($resutlt.fileList.length>0))
+var $result : Object
+$result:=cs.fileSelector.new($selectorOptions).selectDialog()
+If ($result.success && ($result.fileList.length>0))
 
 var $file : 4D.File
-$file:=$resutlt.fileList[0]
+$file:=$result.fileList[0]
 
 End if 
 
 
+// long style
 var $selector : cs.fileSelector
 $selector:=cs.fileSelector.new()
 
@@ -36,12 +42,12 @@ $selector.useSheetWindow:=True
 //$selector.selectFile:=True
 $selector.selectFolder:=False
 
-var $resutlt : Object
-$resutlt:=$selector.selectDialog()
-If ($resutlt.success && ($resutlt.fileList.length>0))
+var $result : Object
+$result:=$selector.selectDialog()
+If ($result.success && ($result.fileList.length>0))
 
 var $file : 4D.File
-$file:=$resutlt.fileList[0]
+$file:=$result.fileList[0]
 
 End if 
 */
@@ -100,7 +106,7 @@ Function get packageSelection()->$packageSelection : Boolean
 	$packageSelection:=This:C1470.options ?? 2
 	
 Function set packageSelection($packageSelection : Boolean)
-	// package selection 2
+	// package selection 4
 	If ($packageSelection)
 		This:C1470.options:=This:C1470.options ?+ 2
 	Else 
