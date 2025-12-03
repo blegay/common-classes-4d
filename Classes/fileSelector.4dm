@@ -60,7 +60,23 @@ property options : Integer
 property selectFile : Boolean
 property selectFolder : Boolean
 
+property _multipleFilesBit : Integer
+property _packageOpenBit : Integer
+property _packageSelectionBit : Integer
+property _aliasSelectionBit : Integer
+property _useSheetWindowBit : Integer
+property _fileNameEntryBit : Integer
+
 Class constructor($params : Object)
+	
+	// class "constants"
+	This:C1470._multipleFilesBit:=0
+	This:C1470._packageOpenBit:=1
+	This:C1470._packageSelectionBit:=2
+	This:C1470._aliasSelectionBit:=3
+	This:C1470._useSheetWindowBit:=4
+	This:C1470._fileNameEntryBit:=5
+	
 	This:C1470.reset()
 	
 	If ((Count parameters:C259>0) && ($params#Null:C1517))
@@ -68,6 +84,8 @@ Class constructor($params : Object)
 			This:C1470[$property]:=$params[$property]
 		End for each 
 	End if 
+	
+	
 	
 Function reset()
 	This:C1470.folder:=Null:C1517
@@ -78,76 +96,40 @@ Function reset()
 	This:C1470.selectFolder:=True:C214
 	
 Function get multipleFiles()->$multipleFiles : Boolean
-	// multiple files 1
-	$multipleFiles:=This:C1470.options ?? 0
+	$multipleFiles:=This:C1470._bitGet(This:C1470._multipleFilesBit)
 	
 Function set multipleFiles($multipleFiles : Boolean)
-	// multiple files 1
-	If ($multipleFiles)
-		This:C1470.options:=This:C1470.options ?+ 0
-	Else 
-		This:C1470.options:=This:C1470.options ?- 0
-	End if 
+	$multipleFiles:=This:C1470._bitSet(This:C1470._multipleFilesBit; $multipleFiles)
 	
 Function get packageOpen()->$packageOpen : Boolean
-	// package open 2
-	$packageOpen:=This:C1470.options ?? 1
+	$multipleFiles:=This:C1470._bitGet(This:C1470._packageOpenBit)
 	
 Function set packageOpen($packageOpen : Boolean)
-	// package open 2
-	If ($packageOpen)
-		This:C1470.options:=This:C1470.options ?+ 1
-	Else 
-		This:C1470.options:=This:C1470.options ?- 1
-	End if 
+	$multipleFiles:=This:C1470._bitSet(This:C1470._packageOpenBit; $packageOpen)
 	
 Function get packageSelection()->$packageSelection : Boolean
-	// package selection 4
-	$packageSelection:=This:C1470.options ?? 2
+	$multipleFiles:=This:C1470._bitGet(This:C1470._packageSelectionBit)
 	
 Function set packageSelection($packageSelection : Boolean)
-	// package selection 4
-	If ($packageSelection)
-		This:C1470.options:=This:C1470.options ?+ 2
-	Else 
-		This:C1470.options:=This:C1470.options ?- 2
-	End if 
+	$multipleFiles:=This:C1470._bitSet(This:C1470._packageSelectionBit; $packageSelection)
 	
 Function get aliasSelection()->$aliasSelection : Boolean
-	// Alias selection 8
-	$aliasSelection:=This:C1470.options ?? 3
+	$multipleFiles:=This:C1470._bitGet(This:C1470._aliasSelectionBit)
 	
 Function set aliasSelection($aliasSelection : Boolean)
-	// Alias selection 8
-	If ($aliasSelection)
-		This:C1470.options:=This:C1470.options ?+ 3
-	Else 
-		This:C1470.options:=This:C1470.options ?- 3
-	End if 
+	$multipleFiles:=This:C1470._bitSet(This:C1470._aliasSelectionBit; $aliasSelection)
 	
 Function get useSheetWindow()->$useSheetWindow : Boolean
-	// use sheet window 16
-	$useSheetWindow:=This:C1470.options ?? 4
+	$multipleFiles:=This:C1470._bitGet(This:C1470._useSheetWindowBit)
 	
 Function set useSheetWindow($useSheetWindow : Boolean)
-	// use sheet window 16
-	If ($useSheetWindow)
-		This:C1470.options:=This:C1470.options ?+ 4
-	Else 
-		This:C1470.options:=This:C1470.options ?- 4
-	End if 
+	$multipleFiles:=This:C1470._bitSet(This:C1470._useSheetWindowBit; $useSheetWindow)
 	
 Function get fileNameEntry()->$fileNameEntry : Boolean
-	// file name entry 32
-	$fileNameEntry:=This:C1470.options ?? 5
+	$multipleFiles:=This:C1470._bitGet(This:C1470._fileNameEntryBit)
 	
 Function set fileNameEntry($fileNameEntry : Boolean)
-	// file name entry 32
-	If ($fileNameEntry)
-		This:C1470.options:=This:C1470.options ?+ 5
-	Else 
-		This:C1470.options:=This:C1470.options ?- 5
-	End if 
+	$multipleFiles:=This:C1470._bitSet(This:C1470._fileNameEntryBit; $fileNameEntry)
 	
 	
 Function selectDialog()->$result : Object
@@ -222,4 +204,9 @@ Function _platformPathListToResult($platformPathList : Collection; $result : Obj
 		
 	End for each 
 	
+Function _bitGet($bit : Integer)->$bitValue : Boolean
+	$bitValue:=This:C1470.options ?? $bit
+	
+Function _bitSet($bit : Integer; $bitValue : Boolean)
+	This:C1470.options:=$bitValue ? This:C1470.options ?+ $bit : This:C1470.options ?- $bit
 	
