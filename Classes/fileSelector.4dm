@@ -99,37 +99,37 @@ Function get multipleFiles()->$multipleFiles : Boolean
 	$multipleFiles:=This:C1470._bitGet(This:C1470._multipleFilesBit)
 	
 Function set multipleFiles($multipleFiles : Boolean)
-	$multipleFiles:=This:C1470._bitSet(This:C1470._multipleFilesBit; $multipleFiles)
+	This:C1470._bitSet(This:C1470._multipleFilesBit; $multipleFiles)
 	
 Function get packageOpen()->$packageOpen : Boolean
-	$multipleFiles:=This:C1470._bitGet(This:C1470._packageOpenBit)
+	$packageOpen:=This:C1470._bitGet(This:C1470._packageOpenBit)
 	
 Function set packageOpen($packageOpen : Boolean)
-	$multipleFiles:=This:C1470._bitSet(This:C1470._packageOpenBit; $packageOpen)
+	This:C1470._bitSet(This:C1470._packageOpenBit; $packageOpen)
 	
 Function get packageSelection()->$packageSelection : Boolean
-	$multipleFiles:=This:C1470._bitGet(This:C1470._packageSelectionBit)
+	$packageSelection:=This:C1470._bitGet(This:C1470._packageSelectionBit)
 	
 Function set packageSelection($packageSelection : Boolean)
-	$multipleFiles:=This:C1470._bitSet(This:C1470._packageSelectionBit; $packageSelection)
+	This:C1470._bitSet(This:C1470._packageSelectionBit; $packageSelection)
 	
 Function get aliasSelection()->$aliasSelection : Boolean
-	$multipleFiles:=This:C1470._bitGet(This:C1470._aliasSelectionBit)
+	$aliasSelection:=This:C1470._bitGet(This:C1470._aliasSelectionBit)
 	
 Function set aliasSelection($aliasSelection : Boolean)
-	$multipleFiles:=This:C1470._bitSet(This:C1470._aliasSelectionBit; $aliasSelection)
+	This:C1470._bitSet(This:C1470._aliasSelectionBit; $aliasSelection)
 	
 Function get useSheetWindow()->$useSheetWindow : Boolean
-	$multipleFiles:=This:C1470._bitGet(This:C1470._useSheetWindowBit)
+	$useSheetWindow:=This:C1470._bitGet(This:C1470._useSheetWindowBit)
 	
 Function set useSheetWindow($useSheetWindow : Boolean)
-	$multipleFiles:=This:C1470._bitSet(This:C1470._useSheetWindowBit; $useSheetWindow)
+	This:C1470._bitSet(This:C1470._useSheetWindowBit; $useSheetWindow)
 	
 Function get fileNameEntry()->$fileNameEntry : Boolean
-	$multipleFiles:=This:C1470._bitGet(This:C1470._fileNameEntryBit)
+	$fileNameEntry:=This:C1470._bitGet(This:C1470._fileNameEntryBit)
 	
 Function set fileNameEntry($fileNameEntry : Boolean)
-	$multipleFiles:=This:C1470._bitSet(This:C1470._fileNameEntryBit; $fileNameEntry)
+	This:C1470._bitSet(This:C1470._fileNameEntryBit; $fileNameEntry)
 	
 	
 Function selectDialog()->$result : Object
