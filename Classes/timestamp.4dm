@@ -9,24 +9,33 @@
 //$timestamp.getIso8601() => "20240208T062333Z"
 
 property timestamp : Text
+property utc : Boolean
 
 Class constructor($timestampParam : Text; $utc : Boolean)
 	
-	This:C1470.utc:=$utc
+	Case of 
+		: (Count parameters:C259>1)
+			This:C1470.utc:=$utc
+			
+		: (Count parameters:C259>0)
+			This:C1470.utc:=(Substring:C12($timestampParam; 24; 1)="Z")
+	End case 
+	
 	
 	// "2024-02-08T06:23:33.619Z"
 	var $timestamp : Text
 	Case of 
 		: (Count parameters:C259=0)
-			// TODO
+			
 			$timestamp:=Timestamp:C1445
+			This:C1470.utc:=True:C214
 			
 		: (This:C1470._isValid($timestampParam))
 			$timestamp:=$timestampParam
 			
 		Else 
-			//TODO
 			$timestamp:=Timestamp:C1445
+			This:C1470.utc:=True:C214
 	End case 
 	
 	This:C1470.timestamp:=$timestamp
@@ -187,7 +196,7 @@ Function toEpoch()->$epoch : Integer
 	var $time : Time
 	$time:=Time:C179($timeStr)
 	
-	$epoch:=($date-!1970-01-01!*86400)+$time
+	$epoch:=(($date-!1970-01-01!)*86400)+$time
 	
 Function fromEpoch($epoch : Integer)
 	// creates a timestamp since 1970-01-01 UTC
@@ -247,4 +256,7 @@ Function durationSecondsToString($duration : Integer)->$durationStr : Text
 	
 Function diff($timestamp : cs:C1710.timestamp)->$diff : Integer
 	$diff:=$timestamp.toEpoch()-This:C1470.toEpoch()
+	
+Function diffMs($timestamp : cs:C1710.timestamp)->$diff : Integer
+	$diff:=(($timestamp.toEpoch()-This:C1470.toEpoch())*1000)+($timestamp.millisecond-This:C1470.millisecond)
 	
