@@ -82,9 +82,11 @@ Function _hexTextToBlob($hex : Text; $blobPtr : Pointer)
 		
 		$offset:=0
 		For ($i; 1; $textLength; 2)
-			$hex:=Substring:C12($hex; $i; 2)
 			
-			$blobPtr->{$offset}:=This:C1470._hexByteStrToByteInteger($hex)
+			var $byteStr : Text
+			$byteStr:=Substring:C12($hex; $i; 2)
+			
+			$blobPtr->{$offset}:=This:C1470._hexByteStrToByteInteger($byteStr)
 			
 			$offset:=$offset+1
 		End for 
